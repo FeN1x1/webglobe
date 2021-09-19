@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import JobsList from "@/views/JobsList.vue";
 import PersonsList from "@/views/PersonsList.vue";
 import Job from "@/views/Job.vue";
@@ -10,23 +11,33 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/jobsList",
-    name: "JobsList",
+    name: "jobsList",
     component: JobsList,
   },
   {
     path: "/personsList",
-    name: "PersonsList",
+    name: "personsList",
     component: PersonsList,
   },
   {
+    path: "/job",
+    name: "createJob",
+    component: Job,
+  },
+  {
     path: "/job/:id",
-    name: "Job",
+    name: "editJob",
     component: Job,
     props: true,
   },
   {
+    path: "/person",
+    name: "createPerson",
+    component: Person,
+  },
+  {
     path: "/person/:id",
-    name: "Person",
+    name: "editPerson",
     component: Person,
     props: true,
   },

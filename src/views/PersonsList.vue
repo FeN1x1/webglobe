@@ -1,15 +1,22 @@
 <template>
   <div class="flex flex-col max-w-6xl mx-auto">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <Header titleName="Zoznam osôb" />
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Meno
                 </th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Titul
                 </th>
                 <th
@@ -18,19 +25,28 @@
                 >
                   E-Mail
                 </th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Telefón
                 </th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Pracovná pozícia
                 </th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Plat
                 </th>
                 <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Upraviť</span>
                 </th>
-                 <th scope="col" class="relative px-6 py-3">
+                <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Vymazať</span>
                 </th>
               </tr>
@@ -81,7 +97,12 @@
 </template>
 
 <script>
-export default {};
+import Header from "@/components/UI/Header.vue";
+export default {
+  components: {
+    Header,
+  },
+};
 </script>
 
 <style scoped></style>

@@ -1,49 +1,112 @@
 <template>
-	<section>
-		<form novalidate="" action="" class="container flex flex-col mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
-			<fieldset class="grid grid-cols-4 gap-6 p-6  bg-gray-50  max-w-6xl mx-auto rounded-lg shadow-md">
-				<div class="space-y-2 col-span-full lg:col-span-1">
-					<p class="font-medium">Personal Inormation</p>
-					<p class="text-xs">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci fuga autem eum!</p>
-				</div>
-				<div class="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-					<div class="col-span-full sm:col-span-3">
-						<label for="firstname" class="text-sm">First name</label>
-						<input id="firstname" type="text" placeholder="First name" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full sm:col-span-3">
-						<label for="lastname" class="text-sm">Last name</label>
-						<input id="lastname" type="text" placeholder="Last name" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full sm:col-span-3">
-						<label for="email" class="text-sm">Email</label>
-						<input id="email" type="email" placeholder="Email" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full">
-						<label for="address" class="text-sm">Address</label>
-						<input id="address" type="text" placeholder="" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full sm:col-span-2">
-						<label for="city" class="text-sm">City</label>
-						<input id="city" type="text" placeholder="" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full sm:col-span-2">
-						<label for="state" class="text-sm">State / Province</label>
-						<input id="state" type="text" placeholder="" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-					<div class="col-span-full sm:col-span-2">
-						<label for="zip" class="text-sm">ZIP / Postal</label>
-						<input id="zip" type="text" placeholder="" class="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-600 border-gray-300 text-gray-900">
-					</div>
-				</div>
-			</fieldset>
-			
-		</form>
-	</section>
+  <section class="text-gray-600 body-font relative">
+    <div class="container px-5 mx-auto">
+      <Header :titleName="title" />
+      <div class="lg:w-1/2 md:w-2/3 mx-auto">
+        <div class="flex flex-wrap -m-2">
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label for="name" class="leading-7 text-sm text-gray-600">Názov</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                ref="name"
+                :value="job.name"
+                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              />
+            </div>
+          </div>
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label for="salary" class="leading-7 text-sm text-gray-600">Štandardný plat</label>
+              <input
+                type="number"
+                id="salary"
+                name="salary"
+                ref="salary"
+                :value="job.salary"
+                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              />
+            </div>
+          </div>
+          <div class="p-2 mt-4 w-full">
+            <button
+              v-if="id !== 0"
+              @click="updateJob"
+              class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            >
+              Upraviť
+            </button>
+            <button
+              v-else
+              @click="createJob"
+              class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+            >
+              Vytvoriť
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
-
 <script>
-export default {};
+import { mapState, mapActions } from "vuex";
+
+import Header from "@/components/UI/Header.vue";
+export default {
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      title: "",
+    };
+  },
+  components: {
+    Header,
+  },
+  created() {
+    if (this.id !== 0) {
+      this.$store.dispatch("job/fetch", this.id);
+      this.title = "Upraviť pracovnú pozíciu";
+    } else {
+      this.$store.dispatch("job/clear");
+      this.title = "Nová pracovná pozícia";
+    }
+  },
+  computed: mapState({
+    job: (state) => state.job.job,
+  }),
+  methods: {
+    ...mapActions("job", ["fetch", "update", "create"]),
+    updateJob() {
+      this.$store.dispatch("job/update", {
+        id: this.id,
+        name: this.$refs.name.value,
+        salary: this.$refs.salary.value,
+      });
+      this.$router.push({
+        name: "jobsList",
+        params: {},
+      });
+    },
+    createJob() {
+      this.$store.dispatch("job/create", {
+        name: this.$refs.name.value,
+        salary: this.$refs.salary.value,
+      });
+      this.$router.push({
+        name: "jobsList",
+        params: {},
+      });
+    },
+  },
+};
 </script>
 
 <style scoped></style>
