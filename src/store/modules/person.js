@@ -1,6 +1,16 @@
 export const state = {
   persons: [
-    { id: 1, firstname: 1, lastname: "test", title: 17, email: "test", phone: "test", job: {} },
+    {
+      id: 1,
+      firstname: "Ferko",
+      lastname: "Perko",
+      title: "Mgr",
+      email: "perko@gmail.com",
+      phone: "+421900000000",
+      job: {
+        id: 1
+      },
+    },
     { id: 2, firstname: 1, lastname: "test", title: 17, email: "test", phone: "test", job: {} },
     { id: 3, firstname: 1, lastname: "test", title: 17, email: "test", phone: "test", job: {} },
   ],
@@ -80,8 +90,17 @@ export const actions = {
       { root: true }
     );
   },
-  update({ commit, dispatch }, obj) {
-    commit("UPDATE", obj);
+  update({ commit, dispatch, rootGetters }, obj) {
+    const rootJob = rootGetters["job/getById"](obj.job.id);
+    const person = {
+      ...obj.person,
+      job: {
+        id: obj.job.id,
+        name: rootJob.name,
+        salary: !obj.job.salary ? rootJob.salary : obj.job.salary,
+      },
+    };
+    commit("UPDATE", person);
     dispatch(
       "notification/create",
       { message: `Osoba ${obj.person.firstname + " " + obj.person.lastname} bola úspešne upravená.` },

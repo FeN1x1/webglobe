@@ -133,6 +133,7 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import _ from "lodash";
 
 import Header from "@/components/UI/Header.vue";
 export default {
@@ -163,6 +164,10 @@ export default {
       this.$store.dispatch("person/clear");
       this.title = "Nová osoba";
     }
+
+    if (!_.isEmpty(this.person.job) && this.id !== 0) {
+      this.toggleSalary = true;
+    }
   },
   computed: {
     ...mapState({
@@ -173,23 +178,20 @@ export default {
   methods: {
     ...mapActions("person", ["fetch", "update", "create"]),
     personAction(action) {
-      this.$store.dispatch(
-        `person/${action}`,
-        {
-          person: {
-            id: this.id,
-            firstname: this.$refs.firstname.value,
-            lastname: this.$refs.lastname.value,
-            title: this.$refs.title.value,
-            email: this.$refs.email.value,
-            phone: this.$refs.phone.value,
-          },
-          job: {
-            id: this.$refs.jobId.value,
-            salary: this.toggleSalary ? this.$refs.salary.value : false,
-          },
-        }
-      );
+      this.$store.dispatch(`person/${action}`, {
+        person: {
+          id: this.id,
+          firstname: this.$refs.firstname.value,
+          lastname: this.$refs.lastname.value,
+          title: this.$refs.title.value,
+          email: this.$refs.email.value,
+          phone: this.$refs.phone.value,
+        },
+        job: {
+          id: this.$refs.jobId.value,
+          salary: this.toggleSalary ? this.$refs.salary.value : false,
+        },
+      });
       this.$router.push({
         name: "personsList",
         query: { page: this.currentPage },

@@ -94,8 +94,11 @@ export const actions = {
     commit("UPDATE", job);
     dispatch("notification/create", { message: `Pracovná pozícia ${job.name} bola úspešne upravená.` }, { root: true });
   },
-  delete({ commit, dispatch, getters }, id) {
+  delete({ commit, dispatch, getters, rootState }, id) {
     const job = getters.getById(id);
+    // WIP job deleting
+    // const persons = rootState.person.persons;
+    // const jobsToDelete = persons.find((item) => item.job.id == id); 
     commit("DELETE", id);
     dispatch("notification/create", { message: `Pracovná pozícia ${job.name} bola úspešne vymazaná.` }, { root: true });
   },
