@@ -23,9 +23,16 @@ export const state = {
     { id: 21, name: "test 3", salary: 17 },
   ],
   job: {},
-  jobsCount: 0,
-  jobsPaginated: [{}],
-  jobsPerPage: 10
+  count: 0,
+  pagination: {
+    paginated: [{}],
+    perPage: 10,
+    pages: 0,
+  },
+  filter: {
+    unfiltered: [{}],
+    filterActive: false,
+  },
 };
 
 let jobId = 22;
@@ -50,10 +57,24 @@ export const mutations = {
     state.jobs[jobIndex] = job;
   },
   SET_COUNT(state) {
-    state.jobsCount = state.jobs.length;
+    state.count = state.jobs.length;
+    state.pagination.pages = Math.ceil(state.count / state.pagination.perPage);
   },
   PAGINATE(state, page) {
-    state.jobsPaginated = state.jobs.slice(state.jobsPerPage * (page - 1), state.jobsPerPage * page);
+    state.pagination.paginated = state.jobs.slice(
+      state.pagination.perPage * (page - 1),
+      state.pagination.perPage * page
+    );
+  },
+  SET_FILTER(state, active) {
+    state.filter.filterActive = active;
+  },
+  ADD_FILTER(state, filter) {
+    state.filter.unfiltered = state.jobs;
+    state.jobs = state.jobs.filter((item) => item.name.includes(filter.name));
+  },
+  REMOVE_FILTER(state) {
+    state.jobs = state.filter.unfiltered;
   },
 };
 
@@ -85,10 +106,18 @@ export const actions = {
     commit("SET_COUNT");
     commit("PAGINATE", page);
   },
+  addFilter({ commit }, filter) {
+    commit("SET_FILTER", true);
+    commit("ADD_FILTER", filter);
+  },
+  removeFilter({ commit }, filter) {
+    commit("SET_FILTER", false);
+    commit("REMOVE_FILTER", filter);
+  },
 };
 
 export const getters = {
   getById: (state) => (id) => {
     return state.jobs.find((item) => item.id === +id);
-  }
+  },
 };

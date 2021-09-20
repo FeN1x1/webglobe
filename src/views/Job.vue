@@ -1,47 +1,47 @@
 <template>
-  <section class="text-gray-600 body-font relative">
+  <section class="relative text-gray-600 body-font">
     <div class="container px-5 mx-auto">
       <Header :titleName="title" />
-      <div class="lg:w-1/2 md:w-2/3 mx-auto">
+      <div class="mx-auto lg:w-1/2 md:w-2/3">
         <div class="flex flex-wrap -m-2">
-          <div class="p-2 w-1/2">
+          <div class="w-1/2 p-2">
             <div class="relative">
-              <label for="name" class="leading-7 text-sm text-gray-600">Názov</label>
+              <label for="name" class="text-sm leading-7 text-gray-600">Názov</label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 ref="name"
                 :value="job.name"
-                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200"
               />
             </div>
           </div>
-          <div class="p-2 w-1/2">
+          <div class="w-1/2 p-2">
             <div class="relative">
-              <label for="salary" class="leading-7 text-sm text-gray-600">Štandardný plat</label>
+              <label for="salary" class="text-sm leading-7 text-gray-600">Štandardný plat</label>
               <input
                 type="number"
                 id="salary"
                 name="salary"
                 ref="salary"
                 :value="job.salary"
-                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200"
               />
             </div>
           </div>
-          <div class="p-2 mt-4 w-full">
+          <div class="w-full p-2 mt-4">
             <button
               v-if="id !== 0"
-              @click="updateJob"
-              class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              @click="jobAction('update')"
+              class="flex px-8 py-2 mx-auto text-lg text-white bg-gray-400 border-0 rounded focus:outline-none hover:bg-gray-500"
             >
               Upraviť
             </button>
             <button
               v-else
-              @click="createJob"
-              class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              @click="jobAction('create')"
+              class="flex px-8 py-2 mx-auto text-lg text-white bg-gray-400 border-0 rounded focus:outline-none hover:bg-gray-500"
             >
               Vytvoriť
             </button>
@@ -60,6 +60,10 @@ export default {
     id: {
       type: Number,
       default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
   data() {
@@ -84,29 +88,17 @@ export default {
   }),
   methods: {
     ...mapActions("job", ["fetch", "update", "create"]),
-    updateJob() {
-      this.$store.dispatch("job/update", {
+    jobAction(action) {
+      this.$store.dispatch(`job/${action}`, {
         id: this.id,
         name: this.$refs.name.value,
         salary: this.$refs.salary.value,
       });
       this.$router.push({
         name: "jobsList",
-        params: {},
-      });
-    },
-    createJob() {
-      this.$store.dispatch("job/create", {
-        name: this.$refs.name.value,
-        salary: this.$refs.salary.value,
-      });
-      this.$router.push({
-        name: "jobsList",
-        params: {},
+        query: { page: this.currentPage },
       });
     },
   },
 };
 </script>
-
-<style scoped></style>

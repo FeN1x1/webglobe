@@ -9,6 +9,7 @@ import Person from "@/views/Person.vue";
 Vue.use(VueRouter);
 
 const routes = [
+  { path: "/", redirect: "/jobsList" },
   {
     path: "/jobsList",
     name: "jobsList",
