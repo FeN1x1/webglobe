@@ -13,7 +13,7 @@
           </span>
           <input
             ref="filter"
-            placeholder="Vyhľadať podľa názvu"
+            placeholder="Vyhľadať podľa mena"
             class="block w-full py-2 pl-8 pr-6 text-sm text-gray-700 placeholder-gray-400 bg-white border border-b border-gray-200 rounded appearance-none focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
           />
         </div>

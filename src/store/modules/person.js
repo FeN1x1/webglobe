@@ -8,11 +8,11 @@ export const state = {
       email: "perko@gmail.com",
       phone: "+421900000000",
       job: {
-        id: 1
+        id: 1,
       },
     },
-    { id: 2, firstname: 1, lastname: "test", title: 17, email: "test", phone: "test", job: {} },
-    { id: 3, firstname: 1, lastname: "test", title: 17, email: "test", phone: "test", job: {} },
+    { id: 2, firstname: "Ferko", lastname: "test", title: 17, email: "test", phone: "test", job: {} },
+    { id: 3, firstname: "Ferko", lastname: "test", title: 17, email: "test", phone: "test", job: {} },
   ],
   person: {},
   count: 0,
@@ -68,7 +68,7 @@ export const mutations = {
   },
   ADD_FILTER(state, filter) {
     state.filter.unfiltered = state.persons;
-    state.persons = state.persons.filter((item) => item.name.includes(filter.name));
+    state.persons = state.persons.filter((item) => item.firstname.includes(filter.name));
   },
   REMOVE_FILTER(state) {
     state.persons = state.filter.unfiltered;
